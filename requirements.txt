@@ -1,0 +1,9 @@
+dj-database-url==0.5.0
+Django==2.2.4
+django-countries==5.3.3
+django-ipware==2.1.0
+django-webpack-loader==0.6.0
+djangorestframework==3.10.2
+geoip2==2.9.0
+itsdangerous==1.1.0
+psycopg2==2.8.3

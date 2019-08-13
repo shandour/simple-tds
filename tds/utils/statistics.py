@@ -13,7 +13,7 @@ from ..models import (
 
 
 @transaction.atomic
-def process_statistics(link, ip, country_code) -> None:
+def process_statistics(link: Link, ip: str, country_code: str) -> None:
     user, _ = UniqueUser.objects.get_or_create(ip=ip)
     link_stat, _ = LinkStatistics.objects.get_or_create(link=link)
     link_stat_update_fields = {'last_ip': ip, 'clicks': F('clicks') + 1}
@@ -36,7 +36,7 @@ def process_statistics(link, ip, country_code) -> None:
     LinkStatistics.objects.update(**link_stat_update_fields)
 
 
-def get_redirect_link(link, country_code) -> str:
+def get_redirect_link(link: Link, country_code: str) -> str:
     qs = LandingPage.objects
 
     if country_code:

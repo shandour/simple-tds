@@ -1,22 +1,57 @@
-import React from 'react';
-import { Route, Switch, BrowserRouter as Router } from 'react-router-dom';
+import React from "react";
+import Routes from './Routes';
+import LoginChecker from "./components/LoginChecker";
+import { axios } from './axios';
 
-const App = () => null
-      //(
-  // <Router>
-  //       <Switch>
-  //       //logged in-only routes
-  //       <Route path="/" exact component={Overview} />
-  //       <Route path="/link/:link" exact component={Statistics} />
-  //       <Route path="/link/:link/edit" exact component={EditLink} />
-  //       <Route path="/ip/:ip" exact component={IPOverview} />
-  //       <Route path="/logout" exact component={Logout} />
+export const UserContext = React.createContext(null);
 
-  //   // special routes
-  //       <Route path="/login" exact component={Login} />
-  //       <Route path="/register" exact component={Register} />
-  //   </Switch>
-  // </Router>
-//);
+class App extends React.Component {
+  constructor(props) {
+    super(props);
 
-export default () => <div>8ww22w</div>
+    this.login = user => {
+      this.setState({
+        isLoggedIn: true,
+        user
+      });
+    };
+
+    this.logout = () => {
+      this.setState({
+        isLoggedIn: false,
+        user: null
+      });
+      localStorage.removeItem("token");
+    };
+
+    this.state = {
+      isLoggedIn: false,
+      user: null,
+      login: this.login,
+      logout: this.logout
+    };
+            
+            // monkey-patched to logout on 401
+            axios.interceptors.response.use(
+            async response => response,
+            async (error) => {
+                const token = localStorage.getItem('token');
+                if (error.response.status === 401) {
+                  this.logout();
+                }
+                return Promise.reject(error);
+            });
+  }
+
+  render() {
+    return (
+      <UserContext.Provider value={this.state}>
+        <LoginChecker>
+            <Routes />
+        </LoginChecker>
+      </UserContext.Provider>
+    );
+  }
+}
+
+export default App;

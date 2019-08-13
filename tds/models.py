@@ -1,6 +1,8 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from django_countries.fields import CountryField
+#from django.core.validators import URLValidator
+
 
 User = get_user_model()
 

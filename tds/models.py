@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 from django_countries.fields import CountryField
-#from django.core.validators import URLValidator
+from django.core.validators import URLValidator
 
 
 User = get_user_model()
@@ -19,7 +19,7 @@ class LandingPage(models.Model):
     weight = models.PositiveIntegerField(default=1, blank=True)
     country = CountryField(null=True, blank=True)
     # full url
-    url = models.CharField(max_length=300)
+    url = models.CharField(max_length=1000, validators=[URLValidator()])
 
 
 class UniqueUser(models.Model):
@@ -28,7 +28,7 @@ class UniqueUser(models.Model):
 
 
 class LinkStatistics(models.Model):
-    link = models.ForeignKey(
+    link = models.OneToOneField(
         Link, on_delete=models.CASCADE, related_name='link_stats')
 
     last_ip = models.GenericIPAddressField()

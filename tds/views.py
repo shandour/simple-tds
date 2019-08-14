@@ -7,7 +7,10 @@ from rest_framework.exceptions import PermissionDenied
 
 from tds.models import Link
 from .utils import process_link_request
-from .serializers import LinkSerializer
+from .serializers import (
+    LinkSerializer,
+    SimpleLinkSerializer,
+    LinkDetailSerializer)
 
 
 @require_http_methods(['GET'])
@@ -33,13 +36,25 @@ class LinkAccessMixin:
 
 
 class DisplayLinks(generics.ListCreateAPIView):
-    serializer_class = LinkSerializer
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return SimpleLinkSerializer
+        elif self.request.method == 'POST':
+            return LinkSerializer
 
     def get_queryset(self):
-        return Link.objects.filter(manager=self.request.user)
+        user = self.request.user
+        if user.is_superuser:
+            return Link.objects.all()
+        return Link.objects.filter(manager=user)
 
 
 class ManiupulateLink(generics.RetrieveUpdateDestroyAPIView, LinkAccessMixin):
     serializer_class = LinkSerializer
     queryset = Link.objects.all()
 
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return LinkDetailSerializer
+        elif self.request.method == 'POST':
+            return LinkSerializer

@@ -4457,6 +4457,11 @@ strip-json-comments@~2.0.1:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
   integrity sha1-PFMZQukIwml8DsNEhYwobHygpgo=
 
+styled-bootstrap-grid@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/styled-bootstrap-grid/-/styled-bootstrap-grid-3.0.5.tgz#60572901537490309aeff9354f625bb622764dce"
+  integrity sha512-Xy6jySTr1u8UaKaYvNAraA0GgghwV1XHBAJOHW0RcuRkAFjKBfdyLRICj74lSlR1UpS/uHNH4l0I5PWed8MrCg==
+
 styled-components@^4.3.2:
   version "4.3.2"
   resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-4.3.2.tgz#4ca81918c812d3006f60ac5fdec7d6b64a9509cc"

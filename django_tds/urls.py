@@ -13,5 +13,7 @@ urlpatterns = [
     path('api/', include(api_patterns)),
     path('management/<path>',
          TemplateView.as_view(template_name='index.html')),
+    path('management/',
+         TemplateView.as_view(template_name='index.html')),
     path('<path:url>', landing_page),
 ]

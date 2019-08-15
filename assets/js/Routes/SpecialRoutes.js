@@ -2,6 +2,8 @@ import React, {useContext} from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import { UserContext } from '../App';
 
+import {PageWrapper, PageBody} from '../components/PageElements';
+import Header from '../components/Header';
 
 export const UnauthorizedOnlyRoute =  ({
   component: Component,
@@ -38,8 +40,13 @@ export const AuthorizedOnlyRoute =  ({
         path={path}
         render={innerProps => (
             <>
-            {isLoggedIn ? (
-                    <Component {...innerProps} />
+                {isLoggedIn ? (
+                                  <PageWrapper>
+        <Header />
+        <PageBody>
+                        <Component {...innerProps} />
+                        </PageBody>
+                        </PageWrapper>
             ) : (
                     <Redirect to='/login' />
             )}

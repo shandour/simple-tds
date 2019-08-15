@@ -1,31 +1,38 @@
 import React, {useEffect, useState} from 'react';
-import { Container, Row } from 'styled-bootstrap-grid';
+import {Link} from 'react-router-dom';
 
-import axios from '../Axios';
+import {Row, CenteredTitle, ErrorTitle} from './PageElements';
+import { axios } from '../axios';
 
 export default () => {
     const [links, setLinks] = useState([]);
     const [error, setError] = useState('');
 
-    useEffect(() => {
-        setError([]);
+    const loadLinks = async () => {
+                setError([]);
         try {
             const result = await axios.get('links/');
             if (result.data) {
-                useState(result.data);
+                setLinks(result.data);
             }
-            catch(e) {
-                setError('Network error. CHeck your Internet connection and try reloading the page.');
+        } catch(e) {
+                setError('Network error. Check your Internet connection and try reloading the page.');
             }
-        }, []);
+        };
 
-              return (
-                      <Container>
-                      {links.map(link =>
-                                 <Row key={link.id}>
-                                 {link.url}
-                                 </Row>
-                                )}
-                  </Container>
-              );
+    useEffect(() => {
+        loadLinks();
+    }, []);
+
+    if (error) return <ErrorTitle>{error}</ErrorTitle>;
+
+    return (
+            <>
+            <CenteredTitle> Your links </CenteredTitle>
+        {links.map(link =>
+                   <Row key={link.url}>
+                   <Link to={`link/${link.url}`}> {link.url}</Link>
+                   </Row>)
+        }
+        </>);
 };

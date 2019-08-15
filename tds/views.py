@@ -2,7 +2,6 @@ from django.shortcuts import redirect, get_object_or_404
 from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import generics
-# from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied
 
 from tds.models import Link
@@ -15,9 +14,8 @@ from .serializers import (
 
 @require_http_methods(['GET'])
 def landing_page(request, url):
-    url = None
     link = get_object_or_404(Link, url=url)
-    redirect_url = process_link_request(link)
+    redirect_url = process_link_request(link, request)
 
     return redirect(redirect_url)
 
@@ -50,11 +48,10 @@ class DisplayLinks(generics.ListCreateAPIView):
 
 
 class ManiupulateLink(generics.RetrieveUpdateDestroyAPIView, LinkAccessMixin):
-    serializer_class = LinkSerializer
     queryset = Link.objects.all()
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
             return LinkDetailSerializer
-        elif self.request.method == 'POST':
+        elif self.request.method == 'PUT':
             return LinkSerializer

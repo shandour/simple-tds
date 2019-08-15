@@ -1,9 +1,8 @@
-import React from "react";
+import React from 'react';
+
 import Routes from './Routes';
 import LoginChecker from './components/LoginChecker';
 import { axios } from './axios';
-import { GridThemeProvider } from 'styled-bootstrap-grid';
-import { ThemeProvider } from 'styled-components';
 
 
 export const UserContext = React.createContext(null);
@@ -48,21 +47,14 @@ class App extends React.Component {
 
   render() {
       return (
-              <ThemeProvider
-          theme={styledTheme}
-              >
-              <GridThemeProvider
-          gridTheme={gridTheme}
-              >
               <UserContext.Provider value={this.state}>
               <LoginChecker>
               <Routes />
               </LoginChecker>
               </UserContext.Provider>
-              </GridThemeProvider>
-              </ThemeProvider>
     );
   }
 }
+
 
 export default App;

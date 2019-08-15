@@ -1,11 +1,16 @@
 import React from 'react';
 import { Switch, BrowserRouter as Router } from 'react-router-dom';
-import AuthForm from '../components/AuthForm';
+import Register from '../components/Auth/Register';
+import Login from '../components/Auth/Login';
+
 import Logout from '../components/Logout';
 import Overview from '../components/Overview';
 import Statistics from '../components/Statistics';
 import EditLink from '../components/EditLink';
 import IPOverview from '../components/IPOverview';
+
+
+const AddLink = () => null;
 
 
 import {
@@ -14,15 +19,18 @@ import {
 } from './SpecialRoutes';
 
 export default () => (
-  <Router basename='/management'>
+        <Router basename='/management'>
         <Switch>
             <AuthorizedOnlyRoute path="/" exact component={Overview} />
        <AuthorizedOnlyRoute path="/link/:link" exact component={Statistics} />
         <AuthorizedOnlyRoute path="/link/:link/edit" exact component={EditLink} />
+                <AuthorizedOnlyRoute path="/link/:link/add" exact component={AddLink} />
       <AuthorizedOnlyRoute path="/ip/:ip" exact component={IPOverview} />
-  <AuthorizedOnlyRoute path="/logout" exact component={Logout} />
-        <UnauthorizedOnlyRoute path={['/login', '/register']} exact component={AuthForm} />
-     </Switch>
+        <AuthorizedOnlyRoute path="/logout" exact component={Logout} />
+
+        <UnauthorizedOnlyRoute path="/register" exact component={Register} />
+        <UnauthorizedOnlyRoute path="/login" exact component={Login} />
+        </Switch>
    </Router>
 );
 

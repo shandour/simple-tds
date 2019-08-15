@@ -29,6 +29,8 @@ class LandingPageSerializer(serializers.ModelSerializer):
         # needed to make empty country JSON-serializable
         if data['country'] == '':
             data['country'] = ''
+        else:
+            data['country'] = obj.country.name
         return data
 
     def to_internal_value(self, data):
@@ -49,6 +51,12 @@ class LinkSerializer(serializers.ModelSerializer):
             'url',
             'landing_pages',
         )
+
+    def to_internal_value(self, data):
+        data = super().to_internal_value(data)
+        data['manager'] = self.context['request'].user
+
+        return data
 
     def validate_url(self, value):
         if not self.instance and Link.objects.filter(url=value).exists():
@@ -147,6 +155,7 @@ class LinkDetailSerializer(LinkSerializer):
             data[user.ip] = UniqueUserStatistics.objects.filter(
                 user=user, link=link
             ).first().last_request_time
+        return data if data else None
 
     def to_representation(self, obj):
         data = super().to_representation(obj)
@@ -154,7 +163,7 @@ class LinkDetailSerializer(LinkSerializer):
         stats = {
             'link_stats': LinkStatisticsSerializer(
                 instance=obj.link_stats).data
-            if getattr(obj, 'link_stats', None) else {},
+            if getattr(obj, 'link_stats', None) else None,
             'user_stats': self.get_unique_users(obj),
         }
         data.update(stats)

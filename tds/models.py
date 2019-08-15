@@ -55,3 +55,13 @@ class UniqueUserStatistics(models.Model):
     )
     last_request_time = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        unique_together = ('user', 'link')
+
+
+class ClickStats(models.Model):
+    user_stats = models.ForeignKey(
+        UniqueUserStatistics, related_name='click_stats',
+        on_delete=models.CASCADE)
+    click_time = models.DateTimeField(auto_now_add=True)
+

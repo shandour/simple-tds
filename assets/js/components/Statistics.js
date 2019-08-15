@@ -1,15 +1,18 @@
 import React, {useEffect, useState} from 'react';
+import {Link} from 'react-router-dom';
+
 import {Row, CenteredTitle, ErrorTitle} from './PageElements';
+import {axios} from '../axios';
 
 
-export default ({location: {match: {params}}}) => {
+export default ({match: {params}}) => {
     const [data, setData] = useState({});
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const redirectLink = `${window.location.origin}/${params.link}`;
 
     const loadData = async () => {
-        setError([]);
+        setError('');
         setLoading(true);
         try {
             const result = await axios.get(`links/${params.link}`);
@@ -35,7 +38,7 @@ export default ({location: {match: {params}}}) => {
             <CenteredTitle>Statistics</CenteredTitle>
             <div>Redirect Link: {redirectLink}</div>
             <div>
-            {(data.landingPages && data.loadingPages.length) &&
+            {(data.landingPages && data.landingPages.length) &&
              <>
             <h4>Landing pages</h4>
             {data.landingPages.map(lp =>
@@ -60,7 +63,12 @@ export default ({location: {match: {params}}}) => {
                 {data.userStats ? (
                 <div>
                         {Object.entries(data.userStats).map(
-                            e => <div key={e[0]}>e[0] -- last access time: {new Date(e[1]).toString()}</div> 
+                            e => <div key={e[0]}>
+                                <Link to={`/ip/${e[0]}`}>
+                                {e[0]}
+                            </Link>
+                            -- last access time: {e[1] ? new Date(e[1]).toString(): ''}
+                            </div> 
                         )}
                 </div>
         ) : (

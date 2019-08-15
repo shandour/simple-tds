@@ -21,4 +21,3 @@ class UserSerializer(serializers.ModelSerializer):
             'id': obj.pk,
             'email': obj.email,
         }
-

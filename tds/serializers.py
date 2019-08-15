@@ -4,7 +4,13 @@ from django.utils.translation import ugettext_lazy as _
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from .models import Link, LinkStatistics, LandingPage, UniqueUserStatistics
+from .models import (
+    Link,
+    LinkStatistics,
+    LandingPage,
+    UniqueUserStatistics,
+    UniqueUser,
+)
 
 
 class LinkStatisticsSerializer(serializers.ModelSerializer):
@@ -170,3 +176,36 @@ class LinkDetailSerializer(LinkSerializer):
 
         return data
 
+
+class UserStatsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UniqueUser
+        fields = ('ip',)
+
+    @staticmethod
+    def get_url_history(unique_user, request_user):
+        if not request_user.is_authenticated:
+            return
+        qs = unique_user.user_stats
+        if not request_user.is_superuser:
+            qs = qs.filter(link__manager=request_user)
+        else:
+            qs = qs.all()
+
+        data = {}
+        for stat in qs:
+            data[stat.link.url] = {
+                'last_request_time': stat.last_request_time,
+                'all_times': stat.click_stats
+                .order_by('-click_time')
+                .values_list('click_time', flat=True)
+            }
+        return data if data else None
+
+    def to_representation(self, obj):
+        data = super().to_representation(obj)
+        user = self.context['request'].user
+
+        data['url_info'] = self.get_url_history(obj, user)
+
+        return data

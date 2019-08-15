@@ -9,7 +9,7 @@ export default () => {
     const [error, setError] = useState('');
 
     const loadLinks = async () => {
-                setError([]);
+                setError('');
         try {
             const result = await axios.get('links/');
             if (result.data) {

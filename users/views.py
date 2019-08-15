@@ -68,3 +68,4 @@ class Login(ObtainAuthToken):
             return Response(
                 {'non_field_errors': ["User does not exist."]},
                 status=404)
+

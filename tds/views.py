@@ -2,14 +2,17 @@ from django.shortcuts import redirect, get_object_or_404
 from django.views.decorators.http import require_http_methods
 from django.utils.translation import ugettext_lazy as _
 from rest_framework import generics
+from rest_framework.response import Response
 from rest_framework.exceptions import PermissionDenied
+from rest_framework.decorators import api_view
 
-from tds.models import Link
-from .utils import process_link_request
+from tds.models import Link, UniqueUser
+from .utils import process_link_request, generate_short_url
 from .serializers import (
     LinkSerializer,
     SimpleLinkSerializer,
-    LinkDetailSerializer)
+    LinkDetailSerializer,
+    UserStatsSerializer)
 
 
 @require_http_methods(['GET'])
@@ -55,3 +58,31 @@ class ManiupulateLink(generics.RetrieveUpdateDestroyAPIView, LinkAccessMixin):
             return LinkDetailSerializer
         elif self.request.method == 'PUT':
             return LinkSerializer
+
+
+@api_view(['GET'])
+def get_short_url(request):
+    url = generate_short_url()
+    if url:
+        return Response({'url': url}, status=200)
+    else:
+        return Response({'error': _('Generation timed out. Please try again')},
+                        status=500)
+
+
+class UserStatsAccessMixin:
+    def check_object_permissions(self, request, obj):
+        super().check_object_permissions(request, obj)
+
+        user = request.user
+        if (not user.is_superuser
+            or not obj.links.filter(manager=user).exists()):
+            raise PermissionDenied(
+                _('None of your links have been accessed by this IP.')
+            )
+
+
+class GetUserStats(generics.RetrieveAPIView, UserStatsAccessMixin):
+    serializer_class = UserStatsSerializer
+    queryset = UniqueUser.objects.all()
+    lookup_field = 'ip'

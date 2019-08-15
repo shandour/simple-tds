@@ -9,7 +9,8 @@ from geoip2.errors import AddressNotFoundError
 from django_tds.country_reader import reader
 from ..models import (
     Link, LandingPage, UniqueUser,
-    LinkStatistics, LinkCountry, UniqueUserStatistics)
+    LinkStatistics, LinkCountry, UniqueUserStatistics,
+    ClickStats)
 
 
 @transaction.atomic
@@ -39,6 +40,8 @@ def process_statistics(link: Link, ip: str, country_code: str) -> None:
 
     user_stat, _ = UniqueUserStatistics.objects\
                                        .get_or_create(user=user, link=link)
+    click_stats = ClickStats.objects.create(user_stats=user_stat)
+    user_stat.click_stats.add(click_stats)
     # update last_request_time
     user_stat.save()
 

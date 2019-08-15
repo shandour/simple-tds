@@ -151,3 +151,6 @@ if not GEO_IP2_DB_PATH:
         'geo_ip2_db', 'GeoLite2-Country.mmdb')
     if os.path.isfile(GEO_IP2_DEFAULT_PATH):
         GEO_IP2_DB_PATH = GEO_IP2_DEFAULT_PATH
+
+SHORT_URL_LENGTH = os.environ.get('SHORT_URL_LENGTH', 7)
+MAX_GENERATION_RETRIES = os.environ.get('MAX_GENERATION_RETRIES', 1000)

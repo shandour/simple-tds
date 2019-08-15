@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.views.generic.base import TemplateView
 
 from tds.urls import (
@@ -11,9 +11,7 @@ api_patterns = user_api_patterns + tds_api_patterns
 
 urlpatterns = [
     path('api/', include(api_patterns)),
-    path('management/<path>',
-         TemplateView.as_view(template_name='index.html')),
-    path('management/',
-         TemplateView.as_view(template_name='index.html')),
-    path('<path:url>', landing_page),
+    re_path('management.*',
+            TemplateView.as_view(template_name='index.html')),
+    re_path(r'^(?P<url>[0-9a-zA-z]+)$', landing_page),
 ]

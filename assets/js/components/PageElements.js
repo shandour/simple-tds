@@ -42,3 +42,32 @@ export const LinkDiv = styled.div`
   text-align: center;
   margin-bottom: 20px;
 `;
+
+export const ColDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const RoundedColDiv = styled(ColDiv)`
+  border-radius: 20px;
+  border: 1px solid black;
+`;
+
+export const BadgeFlexDiv = styled.div`
+  height: fit-content;
+  width: fit-content;
+  background-color: #bbb;
+   border-radius: 50%;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 25px;
+  min-height: 25px;
+`;
+
+export const PaddedDiv = styled.div`
+  padding: 5px;
+`;
+
+export const Badge = ({text}) => <BadgeFlexDiv><PaddedDiv>{text}</PaddedDiv></BadgeFlexDiv>

@@ -1,17 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import CanvasJSReact from '../canvas-react-js/canvasjs.react';
 
 import {axios} from '../axios';
 import {getStatsPerHour} from './utils';
 import {ErrorDiv} from './FormComponents';
 
-// const CanvasJS = CanvasJSReact.CanvasJS;
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 const baseOptions = {
     animationEnabled: true,
-    //zoomEnabled: true,
+    zoomEnabled: true,
     title:{
-        text: "Click statistics over 24 hours"
+        text: "Click statistics over the last 24 hours"
     },
     axisX: {
         title: "Hours",
@@ -29,6 +28,7 @@ const baseOptions = {
 };
 
 export default ({link}) => {
+    const chart = useRef();
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
@@ -53,12 +53,20 @@ export default ({link}) => {
         loadData();
     }, []);
 
+    useEffect(() => {
+        if (chart.current) {
+            chart.current.scrollIntoView();
+        }
+    }, [chart.current])
+
     if (loading) return null;
 
     return (
             <div>
             {!error ? (
-                    <CanvasJSChart options={options} />
+                    <div ref={chart}>
+                    <CanvasJSChart options={options}/>
+                    </div>
             ) : (
                     <ErrorDiv>{error}</ErrorDiv>
             )}

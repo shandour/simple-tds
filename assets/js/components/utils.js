@@ -41,3 +41,10 @@ export const prepareCountriesForReactSelect = (landingPages) => landingPages.map
     lp.country = lp.country ? {value: lp.country.code, label: lp.country.name} : null;
     return lp;
 });
+
+
+export const getStatsPerHour = (hourlyStats) => hourlyStats.map(hS => {
+    const hSX = new Date(hS.x);
+    hS.x = hSX;
+    return hS;
+});

@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 
 import {getDate, getFullLink} from './utils';
 import {Row, CenteredTitle, ErrorTitle} from './PageElements';
+import ClicksChart from './ClicksChart';
 import {axios} from '../axios';
 
 
@@ -10,6 +11,7 @@ export default ({history, match: {params}}) => {
     const [data, setData] = useState({});
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [showChart, setShowChart] = useState(false);
     const redirectLink = getFullLink(params.link);
     const editLink = `/link/${params.link}/edit`;
 
@@ -73,9 +75,17 @@ export default ({history, match: {params}}) => {
                                 -- last access time: {getDate(e[1])}
                             </div> 
                         )}
+                    {!showChart ?
+                        <button onClick={() => setShowChart(true)}
+                        >Show Clicks data for the last 24 hours
+                     </button>
+                     :
+                     <ClicksChart link={params.link} />
+                    }
+                    
                 </div>
         ) : (
-                <div>No user statistics for thsi link </div>
+                <div>No user statistics for this link </div>
         )}
         </div>
             </>

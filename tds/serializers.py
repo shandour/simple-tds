@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import transaction
 from django.utils.translation import ugettext_lazy as _
 
@@ -10,6 +12,7 @@ from .models import (
     LandingPage,
     UniqueUserStatistics,
     UniqueUser,
+    ClickStats,
 )
 
 
@@ -210,5 +213,33 @@ class UserStatsSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
 
         data['url_info'] = self.get_url_history(obj, user)
+
+        return data
+
+
+class LinkHourlyStatsSerializer(serializers.ModelSerializer):
+    hourly_stats = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = Link
+        fields = ('hourly_stats',)
+
+    @staticmethod
+    def get_stats_for_hour(relevant_time, link):
+        return ClickStats.objects.filter(
+            user_stats__link=link,
+            click_time__date=relevant_time.date(),
+            click_time__hour=relevant_time.hour,
+        ).distinct().count()
+
+    def get_hourly_stats(self, link):
+        data = []
+        relevant_time = datetime.datetime.now() - datetime.timedelta(hours=24)
+        for _i in range(24):
+            relevant_time += datetime.timedelta(hours=1)
+            data.append({
+                'x': relevant_time,
+                'y': self.get_stats_for_hour(relevant_time, link)
+            })
 
         return data

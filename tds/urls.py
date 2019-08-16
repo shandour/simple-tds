@@ -4,12 +4,14 @@ from .views import (
     ManiupulateLink,
     get_short_url,
     GetUserStats,
-    get_countries)
+    get_countries,
+    LinkStatsView)
 
 link_patterns = [
     path('', DisplayLinks.as_view()),
     path('get-url/', get_short_url),
     path('<str:pk>/', ManiupulateLink.as_view()),
+    path('<str:pk>/stats/', LinkStatsView.as_view()),
 ]
 api_patterns = [
     path('links/', include(link_patterns)),

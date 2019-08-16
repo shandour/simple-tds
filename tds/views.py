@@ -16,7 +16,8 @@ from .serializers import (
     LinkSerializer,
     SimpleLinkSerializer,
     LinkDetailSerializer,
-    UserStatsSerializer)
+    UserStatsSerializer,
+    LinkHourlyStatsSerializer)
 
 
 @require_http_methods(['GET'])
@@ -98,3 +99,8 @@ def get_countries(request):
         get_countries_payload(),
         status=200,
     )
+
+
+class LinkStatsView(generics.RetrieveAPIView, LinkAccessMixin):
+    serializer_class = LinkHourlyStatsSerializer
+    queryset = Link.objects.all()

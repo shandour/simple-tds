@@ -1,14 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import {Link} from 'react-router-dom';
 
-import {getFullLink} from './utils';
-import {Row, CenteredTitle, ErrorTitle} from './PageElements';
+import {getFullLink, landingPagesWithCountryValues, validateLandingPages} from './utils';
+import {Row } from './PageElements';
 import LandingPagesForm from './LinkForms/LandingPagesForm';
 import {axios} from '../axios';
 
-export default () => {
+export default ({history}) => {
     const [url, setUrl] = useState('');
-    const [landingPages, setLandingPages] = useState([]);
+    const [landingPages, setLandingPages] = useState([{
+            url: '',
+            weight: 1,
+            country: null,
+        }]);
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
 
@@ -16,9 +20,9 @@ export default () => {
         setErrors({});
         setLoading(true);
         try {
-            const result = await axios.get('links/get-url/');
-            if (result.data) {
-                setUrl(result.data.url || '');
+            const resp = await axios.get('links/get-url/');
+            if (resp.data) {
+                setUrl(resp.data.url || '');
             }
         } catch({response}) {
             if (response) {
@@ -26,7 +30,7 @@ export default () => {
             } else {
                 setErrors(
                     {
-                        'nonFieldErrors':  'Network error. Check your Internet connection and try reloading the page.'
+                        'nonFieldErrors': ['Network error. Check your Internet connection and try reloading the page.'],
                     });
             }
         }
@@ -35,9 +39,52 @@ export default () => {
         }
     };
 
-    const submit = async () => {
-        // set loading
-        // check: if url, if at least 1 landing page
+    const validateLandingPages = (landingPages) => {
+        let success = true;
+        const errors = [];
+        if (!landingPages.length) {
+            success = false;
+        }
+        landingPages.forEach((lPage, idx) => {
+            errors[idx] = {};
+            if (!lPage.url) {
+                errors[idx] = {'url': 'This field cannot be empty'};
+                success = false;
+            }
+        });
+
+        if (!success) {
+            setErrors({
+                'landingPages': errors,
+            });
+            throw Error('Landing page validation failed');
+        }
+    };
+
+    const landingPagesWithCountryValues = (landingPages) =>landingPages.map(lp => {
+        lp.country = lp.country ? lp.country.value : null;
+        return lp;
+    });
+
+    const submit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            validateLandingPages(landingPages);
+
+            const data = {
+                url,
+                landingPages: landingPagesWithCountryValues(landingPages),
+            }
+            const resp = await axios.post('links/', data);
+            history.push(`/link/${resp.data.url}`);
+        } catch ({response}) {
+            if (response) {
+                setErrors(response.data);
+            }
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
@@ -48,7 +95,16 @@ export default () => {
             </div>
             <button onClick={getUrl} disabled={loading}>Generate short url</button>
             </Row>
-            <LandingPagesForm />
+            {url &&
+            <LandingPagesForm
+        submit={submit}
+        loading={loading}
+        landingPages={landingPages}
+        setLandingPages={setLandingPages}
+        errors={errors}
+        setErrors={setErrors}
+             />
+            }
         </>
     );
 };

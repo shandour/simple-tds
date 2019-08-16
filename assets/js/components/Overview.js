@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 
+import {getFullLink} from './utils';
 import {Row, CenteredTitle, ErrorTitle} from './PageElements';
 import { axios } from '../axios';
 
@@ -31,7 +32,7 @@ export default () => {
             <CenteredTitle> Your links </CenteredTitle>
         {links.map(link =>
                    <Row key={link.url}>
-                   <Link to={`link/${link.url}`}> {link.url}</Link>
+                   <Link to={`link/${link.url}`}> {getFullLink(link.url)}</Link>
                    </Row>)
         }
         </>);

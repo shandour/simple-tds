@@ -36,7 +36,10 @@ class LandingPageSerializer(serializers.ModelSerializer):
         if data['country'] == '':
             data['country'] = ''
         else:
-            data['country'] = obj.country.name
+            data['country'] = {
+                'name': obj.country.name,
+                'code': obj.country.code,
+            }
         return data
 
     def to_internal_value(self, data):

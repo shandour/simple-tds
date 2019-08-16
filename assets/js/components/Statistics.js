@@ -17,7 +17,7 @@ export default ({history, match: {params}}) => {
         setError('');
         setLoading(true);
         try {
-            const result = await axios.get(`links/${params.link}`);
+            const result = await axios.get(`links/${params.link}/`);
             if (result.data) {
                 setData(result.data);
             }
@@ -48,7 +48,7 @@ export default ({history, match: {params}}) => {
                                       <Row key={lp.id}>
                                       <div>Url: {lp.url}</div>
                                       <div>Weight: {lp.weight}</div>
-                                      {lp.country && <div>Country: {lp.country}</div>}
+                                      {lp.country && <div>Country: {lp.country.name}</div>}
                                       </Row>
                                      )}
             </>}

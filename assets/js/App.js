@@ -9,13 +9,30 @@ export const UserContext = React.createContext(null);
 
 class App extends React.Component {
   constructor(props) {
-    super(props);
+      super(props);
+
+      this.getCountries = async () => {
+          try {
+              const res = await axios.get('get-countries/');
+              if (res.data && res.data.length) {
+                  this.setState({
+                      countries: res.data,
+                  });
+              }
+          } catch (e) {
+              console.log(e);
+          }
+      };
 
     this.login = user => {
       this.setState({
         isLoggedIn: true,
          user,
       });
+        const {countries} = this.state;
+        if (!countries.length) {
+            this.getCountries();
+        }
     };
 
     this.logout = () => {
@@ -30,7 +47,8 @@ class App extends React.Component {
       isLoggedIn: false,
       user: null,
       login: this.login,
-      logout: this.logout,
+        logout: this.logout,
+        countries: [],
     };
             
             // monkey-patched to logout on 401

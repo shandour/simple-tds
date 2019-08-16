@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
+import styled from 'styled-components';
 
 import {Row, CenteredTitle, ErrorTitle} from './PageElements';
+import {getDate, getFullLink} from './utils';
 import {axios} from '../axios';
 
 
@@ -9,6 +11,7 @@ export default ({match: {params}}) => {
     const [data, setData] = useState({});
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const [toggledForLink, setToggledForLink] = useState({});
 
     const loadData = async () => {
         setError('');
@@ -32,5 +35,85 @@ export default ({match: {params}}) => {
 
     if (error) return <ErrorTitle>{error}</ErrorTitle>;
 
-    return null;
+    const checkToggled = (link) => {
+        return Boolean(toggledForLink[link]);
+    };
+
+    const setToggled = (link) => {
+        const prevToggled = checkToggled(link);
+        const toggledStates = {...toggledForLink};
+        toggledStates[link] = !prevToggled;
+        setToggledForLink(toggledStates);
+    };
+
+    const getButton = (link, text) => <button onClick={() => setToggled(link)}>{text}</button>;
+
+    const getAllData = (link, allTimes) => {
+        if (!allTimes || !allTimes.length) return null;
+
+        const toggled = checkToggled(link);
+        if (!toggled) {
+            return getButton(link, 'Show all');
+        }
+
+        return (
+                <>
+                <ul>
+                {
+                    allTimes.map(t => <li key={t}>{getDate(t)}</li>)
+                }
+                </ul>
+                {getButton(link, 'Hide all')}
+            </>
+        )
+    };
+
+    const dataEntries = Object.entries(data.urlInfo || {});
+
+    return (
+            <>
+            <CenteredTitle>{data.ip}</CenteredTitle>
+            {dataEntries && (
+                    <TableContainer>
+                    <HeaderRow key="header">
+                    <MidCol>Link accessed</MidCol>
+                    <SmallCol>Last access time</SmallCol>
+                    <MidCol>All access times</MidCol>
+                    </HeaderRow>
+                    {dataEntries.map(e =>
+                                     <BorderedRow key={e[0]}>
+                                     <MidCol>
+                                     <Link to={`/link/${e[0]}`}>{getFullLink(e[0])}</Link>
+                                     </MidCol>
+                                     <SmallCol>{getDate(e[1].lastRequestTime)}</SmallCol>
+                                     <MidCol>
+                                     {getAllData(e[0], e[1].allTimes)}
+                                     </MidCol>
+                                     </BorderedRow>
+                                    )}
+                </TableContainer>
+            )}
+        </>
+    );
 };
+
+
+const SmallCol = styled.div`
+  width: 20%
+`;
+
+const MidCol = styled.div`
+  width: 40%
+`;
+
+const TableContainer = styled.div`
+  border: solid black 1px;
+`;
+
+const BorderedRow = styled(Row)`
+  border-top: solid black 1px;
+`
+
+const HeaderRow = styled(Row)`
+  font-weight: bold;
+`;

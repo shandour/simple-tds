@@ -7,7 +7,11 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework.decorators import api_view
 
 from tds.models import Link, UniqueUser
-from .utils import process_link_request, generate_short_url
+from .utils import (
+    process_link_request,
+    generate_short_url,
+    get_countries_payload,
+)
 from .serializers import (
     LinkSerializer,
     SimpleLinkSerializer,
@@ -86,3 +90,11 @@ class GetUserStats(generics.RetrieveAPIView, UserStatsAccessMixin):
     serializer_class = UserStatsSerializer
     queryset = UniqueUser.objects.all()
     lookup_field = 'ip'
+
+
+@api_view(['GET'])
+def get_countries(request):
+    return Response(
+        get_countries_payload(),
+        status=200,
+    )

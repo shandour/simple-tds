@@ -1,15 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 
+import {getDate, getFullLink} from './utils';
 import {Row, CenteredTitle, ErrorTitle} from './PageElements';
 import {axios} from '../axios';
 
 
-export default ({match: {params}}) => {
+export default ({history, match: {params}}) => {
     const [data, setData] = useState({});
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const redirectLink = `${window.location.origin}/${params.link}`;
+    const redirectLink = getFullLink(params.link);
+    const editLink = `/link/${params.link}/edit`;
 
     const loadData = async () => {
         setError('');
@@ -34,7 +36,8 @@ export default ({match: {params}}) => {
     if (error) return <ErrorTitle>{error}</ErrorTitle>;
 
     return (
-        <>
+            <>
+            <button onClick={() => history.push(editLink)}>Edit Link</button>
             <CenteredTitle>Statistics</CenteredTitle>
             <div>Redirect Link: {redirectLink}</div>
             <div>
@@ -67,7 +70,7 @@ export default ({match: {params}}) => {
                                 <Link to={`/ip/${e[0]}`}>
                                 {e[0]}
                             </Link>
-                            -- last access time: {e[1] ? new Date(e[1]).toString(): ''}
+                                -- last access time: {getDate(e[1])}
                             </div> 
                         )}
                 </div>

@@ -13,7 +13,7 @@ export default () => {
     return (
             <StretchedRow>
             <LinkDiv>
-            <NoDecorationLink to="/links/add">Add new link
+            <NoDecorationLink to="/link/add">Add new link
         </NoDecorationLink>
             </LinkDiv>
             <div>Logged in as {user.email}. <Link to="/logout">Logout</Link></div>

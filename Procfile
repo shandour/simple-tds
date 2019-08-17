@@ -1,1 +1,1 @@
-web: gunicorn --workers=3 django_tds.wsgi
+web: gunicorn django_tds.wsgi

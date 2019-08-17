@@ -67,13 +67,11 @@ def check_if_landing_pages_exist(link: Link) -> None:
 
 def get_ip_and_country_code(request) -> Tuple[str, str]:
     ip, _ = get_client_ip(request)
-    print(f'ip:{ip}; {_}')
     country_code = None
     try:
         if ip:
             response = reader.country(ip)
-            print(f'resp:{response}')
-            country_code = response.couhtry.iso_code
+            country_code = response.country.iso_code
     except (AddressNotFoundError, AttributeError):
         pass
 

@@ -7,6 +7,8 @@ export const FlexForm = styled.form`
 `;
 
 export const InputDiv = styled.div`
+  display: flex;
+  flex-direction: column;
   padding: 10px;
   margin-bottom: 10px;
 `;

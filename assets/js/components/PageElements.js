@@ -76,3 +76,17 @@ export const Badge = ({text}) => <BadgeFlexDiv><PaddedDiv>{text}</PaddedDiv></Ba
 export const NoDecorationLink = styled(Link)`
   text-decoration: none;
 `;
+
+export const LandingPageDiv = styled.div`
+  border: 0.5px gray solid;
+  box-shadow: 1px 1px;
+  padding: 10px;
+  min-height: 100px;
+  min-width: 200px;
+  margin: 5px;
+  border-radius: 10px;
+`;
+
+export const LandingPagesContainer = styled(Row)`
+  flex-wrap: wrap;
+`;

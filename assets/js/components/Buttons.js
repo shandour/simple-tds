@@ -82,3 +82,11 @@ export const LogoutButton = styled(Button)`
     color: pink;
   }
 `;
+
+export const LongGrayButton = styled(Button)`
+  border-radius: 10px;
+  background: gray;
+  &:hover {
+    background-color: lightgray;
+  }
+`;

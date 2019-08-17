@@ -1,9 +1,12 @@
 import React, {useEffect, useState, useContext, useMemo} from 'react';
 import {Link} from 'react-router-dom';
 import Select from 'react-select';
+import styled from 'styled-components';
 
+import {AddButton, CancelButton, SubmitButton} from '../Buttons';
 import LandingPageFormRow from './LandingPageFormRow';
 import {ErrorDiv} from '../FormComponents';
+import {LandingPagesContainer} from '../PageElements';
 import { UserContext } from "../../App";
 
 
@@ -68,6 +71,7 @@ export default ({
     return (
         <>
             <form onSubmit={submit}>
+            <LandingPagesContainer>
             {landingPages.map((lp, idx) =>
                               <>
                               <LandingPageFormRow key={`lp-${idx}`}
@@ -81,8 +85,13 @@ export default ({
                               />
                               </>
                              )}
-            <button onClick={addLandingPage}>Add Landing page</button>
-            <button type="submit">Submit</button>
+                    <AddButton onClick={addLandingPage}>Add Landing page</AddButton>
+            </LandingPagesContainer>
+            <OuterSubmitBtnDiv>
+            <div>
+            <SubmitButton type="submit">Submit</SubmitButton>
+</div>
+        </OuterSubmitBtnDiv>
             </form>
             {(errors.nonFieldErrors && errors.nonFieldErrors.length) &&
              <ErrorDiv>{errors.nonFieldErrors.join('. ')}</ErrorDiv>}
@@ -90,3 +99,10 @@ export default ({
     );
 };
 
+const OuterSubmitBtnDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 25px;
+}
+`;

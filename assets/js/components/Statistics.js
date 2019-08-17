@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 
 import {getDate, getFullLink} from './utils';
-import {Row, CenteredTitle, ErrorTitle, RoundedColDiv, Badge} from './PageElements';
+import {Row, CenteredTitle, ErrorTitle, RoundedColDiv, Badge, LandingPageDiv, LandingPagesContainer} from './PageElements';
 import {EditButton} from './Buttons';
 import ClicksChart from './ClicksChart';
 import {axios} from '../axios';
@@ -125,16 +125,6 @@ const RoundedColDivWithMargin = styled(RoundedColDiv)`
   margin: 15px;
 `;
 
-const LandingPageDiv = styled.div`
-  border: 0.5px gray solid;
-  box-shadow: 1px 1px;
-  padding: 10px;
-  min-height: 100px;
-  min-width: 200px;
-  margin: 5px;
-  border-radius: 10px;
-`;
-
 const InfoDiv = styled.div`
   margin: 4px;
 `;
@@ -160,6 +150,3 @@ const FloatRightEditButton = styled(EditButton)`
   margin-right: 10px;
 `;
 
-const LandingPagesContainer = styled(Row)`
-  flex-wrap: wrap;
-`;

@@ -1,6 +1,8 @@
 import React, { useState} from 'react';
 import {Link} from 'react-router-dom';
+import styled from 'styled-components';
 
+import {LongGrayButton} from './Buttons';
 import {getFullLink, landingPagesWithCountryValues, validateLandingPages} from './utils';
 import {Row } from './PageElements';
 import LandingPagesForm from './LinkForms/LandingPagesForm';
@@ -89,12 +91,14 @@ export default ({history}) => {
 
     return (
         <>
-            <Row>
-            <div>
+            <CenterAlignRow>
+            <LinkDiv>
             {getFullLink(url || 'YOUR SHORT URL')}
-            </div>
-            <button onClick={getUrl} disabled={loading}>Generate short url</button>
-            </Row>
+            </LinkDiv>
+            <MarginLeftButton onClick={getUrl} disabled={loading}>
+            Generate short url
+        </MarginLeftButton>
+            </CenterAlignRow>
             {url &&
             <LandingPagesForm
         submit={submit}
@@ -109,3 +113,17 @@ export default ({history}) => {
     );
 };
 
+
+const CenterAlignRow = styled(Row)`
+  align-items: center;
+  flex-wrap: wrap;
+`;
+
+const MarginLeftButton = styled(LongGrayButton)`
+  margin-left: -6px;
+`;
+
+const LinkDiv = styled.div`
+  border: 0.5px solid gray;
+  padding: 10px;
+`;

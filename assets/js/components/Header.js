@@ -1,10 +1,9 @@
 import React, {useContext} from 'react';
 import {Link} from 'react-router-dom';
-import { Container, Row } from 'styled-bootstrap-grid';
 import styled from 'styled-components';
 
 import {UserContext} from '../App';
-import {NoDecorationLink} from './PageElements';
+import {NoDecorationLink, Row} from './PageElements';
 
 
 export default () => {

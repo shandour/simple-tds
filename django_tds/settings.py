@@ -21,7 +21,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 DEBUG = get_bool_from_env('DEBUG', True)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['django-tds.herokuapp.com']
 
 # Application definition
 

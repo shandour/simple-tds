@@ -154,3 +154,6 @@ if not GEO_IP2_DB_PATH:
 
 SHORT_URL_LENGTH = os.environ.get('SHORT_URL_LENGTH', 7)
 MAX_GENERATION_RETRIES = os.environ.get('MAX_GENERATION_RETRIES', 1000)
+
+# used to serve static files
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'

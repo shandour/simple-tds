@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
+import styled from 'styled-components';
 
 import {getFullLink} from './utils';
-import {Row, CenteredTitle, ErrorTitle} from './PageElements';
+import {Row, CenteredTitle, ErrorTitle, ColDiv} from './PageElements';
 import { axios } from '../axios';
 
 export default () => {
@@ -30,10 +31,32 @@ export default () => {
     return (
             <>
             <CenteredTitle> Your links </CenteredTitle>
+            <CenteringColDiv>
         {links.map(link =>
-                   <Row key={link.url}>
+                   <ResponsiveRow key={link.url}>
                    <Link to={`link/${link.url}`}> {getFullLink(link.url)}</Link>
-                   </Row>)
+                   </ResponsiveRow>)
         }
+        </CenteringColDiv>
         </>);
 };
+
+
+const CenteringColDiv = styled(ColDiv)`
+  align-items: center;
+`;
+
+const ResponsiveRow = styled(Row)`
+  justify-content: center;
+  word-break-break-all;
+  width: 100%;
+  max-width: 400px;
+  @media(min-width: 600px) {
+    max-width: 500px;
+  }
+  &:hover {
+   box-shadow: 1px 1px gray;
+    background-color: aliceblue;
+    border-radius: 19px;
+ }
+`;

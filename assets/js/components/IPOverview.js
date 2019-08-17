@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 
+import {EditButton} from './Buttons';
 import {Row, CenteredTitle, ErrorTitle} from './PageElements';
 import {getDate, getFullLink} from './utils';
 import {axios} from '../axios';
@@ -46,7 +47,7 @@ export default ({match: {params}}) => {
         setToggledForLink(toggledStates);
     };
 
-    const getButton = (link, text) => <button onClick={() => setToggled(link)}>{text}</button>;
+    const getButton = (link, text) => <EditButton onClick={() => setToggled(link)}>{text}</EditButton>;
 
     const getAllData = (link, allTimes) => {
         if (!allTimes || !allTimes.length) return null;
@@ -74,6 +75,7 @@ export default ({match: {params}}) => {
             <>
             <CenteredTitle>{data.ip}</CenteredTitle>
             {dataEntries && (
+                <OverFlowDiv>
                     <TableContainer>
                     <HeaderRow key="header">
                     <MidCol>Link accessed</MidCol>
@@ -92,6 +94,7 @@ export default ({match: {params}}) => {
                                      </BorderedRow>
                                     )}
                 </TableContainer>
+                    </OverFlowDiv>
             )}
         </>
     );
@@ -108,12 +111,18 @@ const MidCol = styled.div`
 
 const TableContainer = styled.div`
   border: solid black 1px;
+  min-width: 1000px;
 `;
 
 const BorderedRow = styled(Row)`
   border-top: solid black 1px;
+  align-items: center;
 `
 
 const HeaderRow = styled(Row)`
   font-weight: bold;
 `;
+
+const OverFlowDiv = styled.div`
+  overflow-x: scroll;
+`

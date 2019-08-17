@@ -1,5 +1,6 @@
 import React from 'react';
-import styled, {media} from 'styled-components';
+import styled from 'styled-components';
+import {Link} from 'react-router-dom';
 
 
 export const PageWrapper = styled.div`
@@ -71,3 +72,7 @@ export const PaddedDiv = styled.div`
 `;
 
 export const Badge = ({text}) => <BadgeFlexDiv><PaddedDiv>{text}</PaddedDiv></BadgeFlexDiv>
+
+export const NoDecorationLink = styled(Link)`
+  text-decoration: none;
+`;

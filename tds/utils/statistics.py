@@ -71,7 +71,7 @@ def get_ip_and_country_code(request) -> Tuple[str, str]:
     try:
         if ip:
             response = reader.country(ip)
-            country_code = response.couhtry.iso_code
+            country_code = response.country.iso_code
     except (AddressNotFoundError, AttributeError):
         pass
 

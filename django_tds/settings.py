@@ -45,6 +45,7 @@ AUTH_USER_MODEL = 'users.User'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -157,4 +158,4 @@ SHORT_URL_LENGTH = os.environ.get('SHORT_URL_LENGTH', 7)
 MAX_GENERATION_RETRIES = os.environ.get('MAX_GENERATION_RETRIES', 1000)
 
 # used to serve static files
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

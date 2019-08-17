@@ -1,33 +1,31 @@
-import React, {useContext} from 'react';
-import {Link} from 'react-router-dom';
-import styled from 'styled-components';
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
 
-import {UserContext} from '../App';
-import {NoDecorationLink, Row} from './PageElements';
-
+import { UserContext } from "../App";
+import { NoDecorationLink, Row } from "./PageElements";
 
 export default () => {
-    const {isLoggedIn, user} = useContext(UserContext);
-    if (!isLoggedIn) return null;
+  const { isLoggedIn, user } = useContext(UserContext);
+  if (!isLoggedIn) return null;
 
-    return (
-            <HeaderRow>
-            <LinkDivWrapper>
-            <LinkDiv>
-            <AddLink to="/link/add">Add new link
-        </AddLink>
-            </LinkDiv>
-            </LinkDivWrapper>
-            <CenteredFlex30Div>
-            <AllLinksLink to="/">
-            All Links
-        </AllLinksLink>
-            </CenteredFlex30Div>
-            <CenteredFlex30Div><ResponsiveSpan>Logged in as </ResponsiveSpan> {user.email}. <LogoutLink to="/logout">Logout</LogoutLink></CenteredFlex30Div>
-            </HeaderRow>
-    );
+  return (
+    <HeaderRow>
+      <LinkDivWrapper>
+        <LinkDiv>
+          <AddLink to="/link/add">Add new link</AddLink>
+        </LinkDiv>
+      </LinkDivWrapper>
+      <CenteredFlex30Div>
+        <AllLinksLink to="/">All Links</AllLinksLink>
+      </CenteredFlex30Div>
+      <CenteredFlex30Div>
+        <ResponsiveSpan>Logged in as </ResponsiveSpan> {user.email}.{" "}
+        <LogoutLink to="/logout">Logout</LogoutLink>
+      </CenteredFlex30Div>
+    </HeaderRow>
+  );
 };
-
 
 const FlexBasis30Div = styled.div`
   flex-basis: 30%;
@@ -79,7 +77,7 @@ const LogoutLink = styled(NoDecorationLink)`
 `;
 
 const ResponsiveSpan = styled.span`
-  @media(max-width: 600px) {
+  @media (max-width: 600px) {
     display: none;
   }
 `;

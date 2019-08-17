@@ -7,7 +7,8 @@
   "license": "MIT",
   "scripts": {
     "build": "webpack --config webpack.config.js --progress --colors --mode production",
-    "watch": "webpack --config webpack.config.js --watch --mode development"
+      "watch": "webpack --config webpack.config.js --watch --mode development",
+      "pretty": "prettier --write \"assets/js/**/*.{jsx,js}\" --no-color"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",
@@ -20,6 +21,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
+    "prettier": "^1.18.2",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^4.39.1",
     "webpack-bundle-tracker": "^0.4.2-beta",

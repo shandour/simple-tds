@@ -1,46 +1,48 @@
-import React, {useEffect, useState} from 'react';
-import {Link} from 'react-router-dom';
-import styled from 'styled-components';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import styled from "styled-components";
 
-import {getFullLink} from './utils';
-import {Row, CenteredTitle, ErrorTitle, ColDiv} from './PageElements';
-import { axios } from '../axios';
+import { getFullLink } from "./utils";
+import { Row, CenteredTitle, ErrorTitle, ColDiv } from "./PageElements";
+import { axios } from "../axios";
 
 export default () => {
-    const [links, setLinks] = useState([]);
-    const [error, setError] = useState('');
+  const [links, setLinks] = useState([]);
+  const [error, setError] = useState("");
 
-    const loadLinks = async () => {
-                setError('');
-        try {
-            const result = await axios.get('links/');
-            if (result.data) {
-                setLinks(result.data);
-            }
-        } catch(e) {
-                setError('Network error. Check your Internet connection and try reloading the page.');
-            }
-        };
+  const loadLinks = async () => {
+    setError("");
+    try {
+      const result = await axios.get("links/");
+      if (result.data) {
+        setLinks(result.data);
+      }
+    } catch (e) {
+      setError(
+        "Network error. Check your Internet connection and try reloading the page."
+      );
+    }
+  };
 
-    useEffect(() => {
-        loadLinks();
-    }, []);
+  useEffect(() => {
+    loadLinks();
+  }, []);
 
-    if (error) return <ErrorTitle>{error}</ErrorTitle>;
+  if (error) return <ErrorTitle>{error}</ErrorTitle>;
 
-    return (
-            <>
-            <CenteredTitle> Your links </CenteredTitle>
-            <CenteringColDiv>
-        {links.map(link =>
-                   <ResponsiveRow key={link.url}>
-                   <Link to={`link/${link.url}`}> {getFullLink(link.url)}</Link>
-                   </ResponsiveRow>)
-        }
-        </CenteringColDiv>
-        </>);
+  return (
+    <>
+      <CenteredTitle> Your links </CenteredTitle>
+      <CenteringColDiv>
+        {links.map(link => (
+          <ResponsiveRow key={link.url}>
+            <Link to={`link/${link.url}`}> {getFullLink(link.url)}</Link>
+          </ResponsiveRow>
+        ))}
+      </CenteringColDiv>
+    </>
+  );
 };
-
 
 const CenteringColDiv = styled(ColDiv)`
   align-items: center;

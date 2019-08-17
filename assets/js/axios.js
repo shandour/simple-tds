@@ -1,12 +1,12 @@
 import Axios from "axios";
 
-const getCookie = (name) => {
+const getCookie = name => {
   let cookieValue = null;
-  if (document.cookie && document.cookie !== '') {
-    let cookies = document.cookie.split(';');
+  if (document.cookie && document.cookie !== "") {
+    let cookies = document.cookie.split(";");
     for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i].trim();
-      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === name + "=") {
         cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
         break;
       }
@@ -15,15 +15,15 @@ const getCookie = (name) => {
   return cookieValue;
 };
 
-const csrftoken = getCookie('csrftoken');
+const csrftoken = getCookie("csrftoken");
 
 export const axios = Axios.create({
-  baseURL: '/api/',
+  baseURL: "/api/",
   headers: {
     accept: "application/json"
   },
-      headers: {
-    'X-CSRFToken': csrftoken,
+  headers: {
+    "X-CSRFToken": csrftoken
   }
 });
 

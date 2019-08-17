@@ -1,13 +1,12 @@
-import React, {useEffect, useContext} from "react";
+import React, { useEffect, useContext } from "react";
 
-import { UserContext } from '../App';
-
+import { UserContext } from "../App";
 
 export default () => {
-    const {logout} = useContext(UserContext);
-    useEffect(() => {
-        logout();
-    }, []);
+  const { logout } = useContext(UserContext);
+  useEffect(() => {
+    logout();
+  }, []);
 
-    return null;
-}
+  return null;
+};

@@ -3,7 +3,7 @@ import axios from "../axios";
 
 import { UserContext } from "../App";
 
-export default ({children}) => {
+export default ({ children }) => {
   const { login, logout } = useContext(UserContext);
   const [loading, setLoading] = useState(true);
 

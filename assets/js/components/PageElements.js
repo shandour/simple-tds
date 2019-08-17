@@ -1,7 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import {Link} from 'react-router-dom';
-
+import React from "react";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export const PageWrapper = styled.div`
   display: flex;
@@ -58,7 +57,7 @@ export const BadgeFlexDiv = styled.div`
   height: fit-content;
   width: fit-content;
   background-color: #bbb;
-   border-radius: 50%;
+  border-radius: 50%;
   text-align: center;
   display: flex;
   align-items: center;
@@ -71,7 +70,11 @@ export const PaddedDiv = styled.div`
   padding: 5px;
 `;
 
-export const Badge = ({text}) => <BadgeFlexDiv><PaddedDiv>{text}</PaddedDiv></BadgeFlexDiv>
+export const Badge = ({ text }) => (
+  <BadgeFlexDiv>
+    <PaddedDiv>{text}</PaddedDiv>
+  </BadgeFlexDiv>
+);
 
 export const NoDecorationLink = styled(Link)`
   text-decoration: none;

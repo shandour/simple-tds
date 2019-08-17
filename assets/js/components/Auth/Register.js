@@ -1,18 +1,17 @@
 import React, { useContext, useState } from "react";
-import {Link} from 'react-router-dom';
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-import AuthForm from './AuthForm';
-import {CenteredTitle, LinkDiv, Wrapper} from '../PageElements';
+import AuthForm from "./AuthForm";
+import { CenteredTitle, LinkDiv, Wrapper } from "../PageElements";
 import axios from "../../axios";
 import { UserContext } from "../../App";
 
-
-export default ({history, location: {pathname}}) => {
+export default ({ history, location: { pathname } }) => {
   const { login } = useContext(UserContext);
 
   const [loading, setLoading] = useState(false);
-    const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({});
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -28,13 +27,13 @@ export default ({history, location: {pathname}}) => {
     };
 
     try {
-        const resp = await axios.post("register/", data);
-        localStorage.setItem("token", resp.data.token);
-        const {
-          data: { user }
-        } = resp;
-        login(user);
-        history.push('/');
+      const resp = await axios.post("register/", data);
+      localStorage.setItem("token", resp.data.token);
+      const {
+        data: { user }
+      } = resp;
+      login(user);
+      history.push("/");
     } catch ({ response }) {
       if (response) {
         setErrors(response.data);
@@ -47,21 +46,20 @@ export default ({history, location: {pathname}}) => {
   return (
     <Wrapper>
       <div>
-              <CenteredTitle>Register</CenteredTitle>
-                  <LinkDiv>
-                  <Link to="/login">Already have an account?</Link>
-                  </LinkDiv>
-          <AuthForm
-      submit={submit}
-      loading={loading}
-      email={email}
-      setEmail={setEmail}
-      password={password}
-      setPassword={setPassword}
-      errors={errors}
-          />
+        <CenteredTitle>Register</CenteredTitle>
+        <LinkDiv>
+          <Link to="/login">Already have an account?</Link>
+        </LinkDiv>
+        <AuthForm
+          submit={submit}
+          loading={loading}
+          email={email}
+          setEmail={setEmail}
+          password={password}
+          setPassword={setPassword}
+          errors={errors}
+        />
       </div>
     </Wrapper>
   );
 };
-
